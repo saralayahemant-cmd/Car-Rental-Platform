@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CarRent - Premium Car Rental Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1e3c72;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo::before {
+      content: "🚗";
+      font-size: 28px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 10px 20px;
+      background: #1e3c72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #2a5298;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(42, 82, 152, 0.2);
+    }
+
+    .nav-btn.secondary {
+      background: transparent;
+      color: #1e3c72;
+      border: 2px solid #1e3c72;
+    }
+
+    .nav-btn.secondary:hover {
+      background: #1e3c72;
+      color: white;
+    }
+
+    .nav-btn.logout {
+      background: #e74c3c;
+    }
+
+    .nav-btn.logout:hover {
+      background: #c0392b;
+      box-shadow: 0 5px 15px rgba(230, 126, 34, 0.3);
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero h1 {
+      font-size: 64px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 30px;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .features {
+      display: flex;
+      gap: 30px;
+      margin: 40px 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .feature {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px 30px;
+      border-radius: 8px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      flex: 1;
+      min-width: 200px;
+      max-width: 250px;
+    }
+
+    .feature-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .feature h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .cta-btn {
+      padding: 15px 40px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .cta-primary {
+      background: #27ae60;
+      color: white;
+    }
+
+    .cta-primary:hover {
+      background: #229954;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4);
+    }
+
+    .cta-secondary {
+      background: white;
+      color: #1e3c72;
+      border: 3px solid white;
+    }
+
+    .cta-secondary:hover {
+      background: transparent;
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* Info Section */
+    .info-section {
+      background: white;
+      padding: 60px 20px;
+    }
+
+    .info-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 42px;
+      color: #1e3c72;
+      text-align: center;
+      margin-bottom: 50px;
+      font-weight: 700;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .info-card {
+      background: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
+      padding: 30px;
+      border-radius: 12px;
+      border-left: 5px solid #2a5298;
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-left-color: #27ae60;
+    }
+
+    .info-card-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .info-card h3 {
+      color: #1e3c72;
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .info-card p {
+      color: #666;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* How It Works Section */
+    .how-it-works {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      padding: 60px 20px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .step {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    .step-number {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+    }
+
+    .step h3 {
+      color: #1e3c72;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1e3c72;
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 60px;
+    }
+
+    .footer p {
+      margin-bottom: 10px;
+      opacity: 0.9;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .footer-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      transition: opacity 0.3s;
+    }
+
+    .footer-links a:hover {
+      opacity: 0.7;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-container {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .nav-buttons {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero h1 {
+        font-size: 40px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .features {
+        flex-direction: column;
+      }
+
+      .feature {
+        max-width: 100%;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+      }
+
+      .cta-btn {
+        width: 100%;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .hero p {
+        font-size: 14px;
+      }
+
+      .nav-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+      }
+
+      .feature {
+        padding: 15px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">CarRent</a>
+      <div class="nav-buttons">
+        <%if(currUser){%>
+          <a href="/host/newcar" class="nav-btn">Add Car for Rent</a>
+          <a href="/host/mybookings" class="nav-btn">My Bookings</a>
+          <a href="/logout" class="nav-btn logout">Logout</a>
+        <%} else {%>
+          <a href="/login" class="nav-btn secondary">Login</a>
+          <a href="/signup" class="nav-btn">Sign Up</a>
+        <%}%>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>🚗 Welcome to CarRent</h1>
+      <p>Rent premium cars with ease. Whether you're looking to rent a car for a trip or earn money by listing your vehicle, CarRent is your ultimate platform.</p>
+      
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">💰</div>
+          <h3>Affordable Rates</h3>
+          <p>Competitive pricing on quality vehicles</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">✔️</div>
+          <h3>Verified Cars</h3>
+          <p>All vehicles are verified & well-maintained</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🛡️</div>
+          <h3>Secure Booking</h3>
+          <p>Safe and secure rental transactions</p>
+        </div>
+      </div>
+
+      <%if(!currUser){%>
+        <div class="cta-buttons">
+          <a href="/signup" class="cta-btn cta-primary">Get Started</a>
+        </div>
+      <%} else {%>
+        <div class="cta-buttons">
+          <a href="/host/cars" class="cta-btn cta-primary">Browse Available Cars</a>
+        </div>
+      <%}%>
+    </div>
+  </section>
+
+  <!-- Info Section -->
+  <section class="info-section">
+    <div class="info-container">
+      <h2 class="section-title">Why Choose CarRent?</h2>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-card-icon">🌍</div>
+          <h3>Wide Selection</h3>
+          <p>Choose from a diverse range of vehicles tailored to your needs, from economy cars to premium SUVs.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🚀</div>
+          <h3>Quick Booking</h3>
+          <p>Book your car in just a few clicks with our user-friendly platform and instant confirmation.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">💳</div>
+          <h3>Flexible Payment</h3>
+          <p>Multiple payment options and flexible rental periods to suit your budget and schedule.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">📞</div>
+          <h3>24/7 Support</h3>
+          <p>Our dedicated support team is always ready to help with any questions or concerns.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">🔒</div>
+          <h3>Insurance Included</h3>
+          <p>All rentals come with comprehensive insurance coverage for your peace of mind.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-card-icon">⭐</div>
+          <h3>Trusted Community</h3>
+          <p>Join thousands of satisfied customers and vehicle owners on CarRent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="info-container">
+      <h2 class="section-title">How It Works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Create Account</h3>
+          <p>Sign up on CarRent with your email and basic information in just 2 minutes.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Browse or List</h3>
+          <p>Browse available cars or list your own vehicle to start earning.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Book or Rent</h3>
+          <p>Select dates and book your car or accept bookings for your vehicle.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Enjoy</h3>
+          <p>Complete the transaction and enjoy your rental experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2026 CarRent. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="#about">About Us</a>
+      <a href="#privacy">Privacy Policy</a>
+      <a href="#terms">Terms & Conditions</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+    <p>Making car rentals simple, affordable, and accessible.</p>
+  </footer>
+</body>
+</html>

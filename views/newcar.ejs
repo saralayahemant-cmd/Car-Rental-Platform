@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add New Car - CarRent</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .form-wrapper {
+        width: 100%;
+        max-width: 700px;
+      }
+
+      .navbar {
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px 20px;
+        margin-bottom: 30px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+        color: #1e3c72;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .logo::before {
+        content: "🚗";
+        font-size: 28px;
+      }
+
+      .back-btn {
+        background: #1e3c72;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .back-btn:hover {
+        background: #2a5298;
+      }
+
+      .form-container {
+        background: white;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .form-header {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .form-header h2 {
+        color: #1e3c72;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .form-header p {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .form-group {
+        margin-bottom: 22px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      input[type="text"],
+      input[type="number"],
+      input[type="file"],
+      select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="file"]:focus,
+      select:focus {
+        outline: none;
+        border-color: #2a5298;
+        box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+      }
+
+      input[type="file"] {
+        padding: 10px;
+        cursor: pointer;
+      }
+
+      .radio-group {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .radio-group label {
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        font-weight: normal;
+        cursor: pointer;
+      }
+
+      .radio-group input[type="radio"] {
+        margin-right: 8px;
+        cursor: pointer;
+        width: auto;
+        border: none;
+      }
+
+      .file-upload-info {
+        font-size: 12px;
+        color: #666;
+        margin-top: 8px;
+        background: #f9f9f9;
+        padding: 8px 12px;
+        border-radius: 6px;
+        border-left: 3px solid #2a5298;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+      }
+
+      .submit-btn:active {
+        transform: translateY(0);
+      }
+
+      .form-section {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .form-section-title {
+        color: #1e3c72;
+        font-weight: 600;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .form-container {
+          padding: 30px 20px;
+        }
+
+        .form-header h2 {
+          font-size: 24px;
+        }
+
+        .radio-group {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .navbar {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-wrapper">
+      <div class="navbar">
+        <a href="/" class="logo">CarRent</a>
+        <a href="/host/cars" class="back-btn">← Back</a>
+      </div>
+
+      <div class="form-container">
+        <div class="form-header">
+          <h2>🚗 Add a New Car</h2>
+          <p>List your car on CarRent and start earning</p>
+        </div>
+
+        <%if(error && error.length){%>
+          <div style="background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 500;">❌ <%=error%></div>
+        <%}%>
+
+        <form action="/host/newcar" method="POST" enctype="multipart/form-data">
+          <div class="form-section">
+            <span class="form-section-title">Basic Information</span>
+
+            <!-- Car Name -->
+            <div class="form-group">
+              <label for="car_name">Car Name/Model</label>
+              <input
+                type="text"
+                name="car_name"
+                id="car_name"
+                placeholder="e.g., Toyota Innova 2023"
+                required
+              />
+            </div>
+
+            <!-- Condition -->
+            <div class="form-group">
+              <label for="condition">Vehicle Condition</label>
+              <select name="condition" id="condition" required>
+                <option value="">Select vehicle condition</option>
+                <option value="Excellent">Excellent</option>
+                <option value="Very Good">Very Good</option>
+                <option value="Good">Good</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <span class="form-section-title">Vehicle Details</span>
+
+            <!-- Seats -->
+            <div class="form-group">
+              <label for="seats">Number of Seats</label>
+              <input
+                type="number"
+                name="seats"
+                id="seats"
+                min="2"
+                max="8"
+                placeholder="e.g., 5"
+                required
+              />
+            </div>
+
+            <!-- Fuel Type -->
+            <div class="form-group">
+              <label>Fuel Type</label>
+              <div class="radio-group">
+                <label>
+                  <input
+                    type="radio"
+                    name="fuel_type"
+                    value="Petrol"
+                    required
+                  />
+                  Petrol
+                </label>
+                <label>
+                  <input type="radio" name="fuel_type" value="Diesel" />
+                  Diesel
+                </label>
+                <label>
+                  <input type="radio" name="fuel_type" value="Electric" />
+                  Electric
+                </label>
+                <label>
+                  <input type="radio" name="fuel_type" value="Hybrid" />
+                  Hybrid
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <span class="form-section-title">Pricing & Media</span>
+
+            <!-- Price -->
+            <div class="form-group">
+              <label for="price">Daily Rental Price (₹)</label>
+              <input
+                type="number"
+                name="price"
+                id="price"
+                min="0"
+                step="100"
+                placeholder="e.g., 2500"
+                required
+              />
+            </div>
+
+            <!-- Car Image Upload -->
+            <div class="form-group">
+              <label for="car_image">Car Image</label>
+              <input
+                type="file"
+                name="car_image"
+                id="car_image"
+                accept="image/*"
+                required
+              />
+              <div class="file-upload-info">
+                ℹ️ JPG, PNG, GIF, WebP supported (Max 5MB)
+              </div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">✓ List Car Now</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

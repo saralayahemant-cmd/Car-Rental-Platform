@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - CarRent</title>
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 15px 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 900px;
+      gap: 15px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #1e3c72;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .logo::before {
+      content: "🚗";
+      font-size: 28px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      padding: 8px 15px;
+      background: #1e3c72;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .nav-btn:hover {
+      background: #2a5298;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(42, 82, 152, 0.2);
+    }
+
+    .profile-container {
+      width: 100%;
+      max-width: 900px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .profile-header h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .profile-header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .profile-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 40px;
+    }
+
+    .form-section {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      color: #333;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .form-group input {
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #2a5298;
+      box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+
+    .coordinates-info {
+      background: #f9f9f9;
+      border-left: 4px solid #2a5298;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .coordinates-info strong {
+      color: #1e3c72;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .map-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .map-heading {
+      color: #1e3c72;
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 350px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid #2a5298;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .current-location {
+      background: #e8f5e9;
+      border-left: 4px solid #27ae60;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #2e7d32;
+    }
+
+    .current-location strong {
+      display: block;
+      margin-bottom: 8px;
+      color: #1b5e20;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .submit-btn {
+      padding: 14px;
+      background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(39, 174, 96, 0.3);
+    }
+
+    .cancel-btn {
+      padding: 14px;
+      background: #e0e0e0;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .cancel-btn:hover {
+      background: #d0d0d0;
+      transform: translateY(-2px);
+    }
+
+    .alert {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .alert-success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .location-note {
+      background: #fffacd;
+      border-left: 4px solid #f39c12;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #856404;
+      margin-top: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-content {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+
+      .profile-header {
+        padding: 30px 20px;
+      }
+
+      .profile-header h1 {
+        font-size: 24px;
+      }
+
+      .button-group {
+        grid-template-columns: 1fr;
+      }
+
+      .map-container {
+        height: 250px;
+      }
+
+      .navbar {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <a href="/" class="logo">CarRent</a>
+    <div class="nav-buttons">
+      <a href="/host/cars" class="nav-btn">My Cars</a>
+      <a href="/host/mybookings" class="nav-btn">Bookings</a>
+      <a href="/logout" class="nav-btn">Logout</a>
+    </div>
+  </div>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>👤 My Profile</h1>
+      <p>Update your pickup location so customers can find you easily</p>
+    </div>
+
+    <div class="profile-content">
+      <div class="form-section">
+        <h2 style="color: #1e3c72; margin-bottom: 10px;">📍 Location Details</h2>
+        
+        <% if(success && success.length) { %>
+          <div class="alert alert-success"><%= success %></div>
+        <% } %>
+        <% if(error && error.length) { %>
+          <div class="alert alert-error"><%= error %></div>
+        <% } %>
+
+        <form id="profileForm" action="/host/profile" method="POST">
+          <div class="form-group">
+            <label for="address">📌 Pickup Address</label>
+            <input 
+              type="text" 
+              id="address" 
+              name="address" 
+              value="<%= user.address || '' %>" 
+              placeholder="e.g., 123 Main Street, Delhi"
+              required
+            />
+            <div class="form-hint">Enter your car pickup location address</div>
+          </div>
+
+          <div class="form-group">
+            <label for="latitude">📍 Latitude</label>
+            <input 
+              type="number" 
+              id="latitude" 
+              name="latitude" 
+              step="0.0001"
+              value="<%= user.latitude || 28.6139 %>"
+              placeholder="e.g., 28.6139"
+              required
+            />
+            <div class="form-hint">e.g., 28.6139 (for Delhi). Click on map to auto-fill.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="longitude">🧭 Longitude</label>
+            <input 
+              type="number" 
+              id="longitude" 
+              name="longitude" 
+              step="0.0001"
+              value="<%= user.longitude || 77.209 %>"
+              placeholder="e.g., 77.2090"
+              required
+            />
+            <div class="form-hint">e.g., 77.2090 (for Delhi). Click on map to auto-fill.</div>
+          </div>
+
+          <div class="coordinates-info">
+            <strong>💡 How to find your coordinates:</strong>
+            <ol style="margin-left: 20px; margin-top: 8px;">
+              <li>Use the map beside to click at your location</li>
+              <li>Or paste your address in Google Maps and copy the coordinates</li>
+              <li>Format: Latitude, Longitude (separated by comma)</li>
+            </ol>
+          </div>
+
+          <div class="location-note">
+            <strong>Note:</strong> Your location will be displayed on your car's detail page so renters know exactly where to pick up your car.
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="submit-btn">✅ Save Location</button>
+            <a href="/host/cars" class="cancel-btn">Cancel</a>
+          </div>
+        </form>
+      </div>
+
+      <div class="map-section">
+        <div class="map-heading">
+          🗺️ Click on the map to set your location
+        </div>
+        <div id="profileMap" class="map-container"></div>
+        
+        <div class="current-location">
+          <strong>📍 Current Location:</strong>
+          <div>
+            Latitude: <strong><span id="currentLat"><%= user.latitude || 28.6139 %></span></strong>
+          </div>
+          <div>
+            Longitude: <strong><span id="currentLng"><%= user.longitude || 77.209 %></span></strong>
+          </div>
+          <div style="margin-top: 8px; font-style: italic;">
+            Address: <strong><%= user.address || "Not set" %></strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script>
+    // Initialize profile map with click functionality
+    (function() {
+      const mapElement = document.getElementById('profileMap');
+      
+      if (mapElement) {
+        const initialLat = parseFloat(document.getElementById('latitude').value) || 28.6139;
+        const initialLng = parseFloat(document.getElementById('longitude').value) || 77.209;
+        
+        // Initialize map
+        const map = L.map('profileMap').setView([initialLat, initialLng], 14);
+        
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors',
+          maxZoom: 19
+        }).addTo(map);
+        
+        // Create marker that can be moved
+        let marker = L.marker([initialLat, initialLng], {
+          icon: L.icon({
+            iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.2/images/marker-icon.png',
+            iconSize: [38, 95],
+            iconAnchor: [19, 95],
+            popupAnchor: [1, -34]
+          }),
+          draggable: true
+        }).addTo(map);
+        
+        // Update form fields when marker is dragged
+        marker.on('dragend', function(e) {
+          const latlng = marker.getLatLng();
+          document.getElementById('latitude').value = latlng.lat.toFixed(4);
+          document.getElementById('longitude').value = latlng.lng.toFixed(4);
+          document.getElementById('currentLat').textContent = latlng.lat.toFixed(4);
+          document.getElementById('currentLng').textContent = latlng.lng.toFixed(4);
+          updateMarkerPopup(marker, latlng);
+        });
+        
+        // Click on map to set location
+        map.on('click', function(e) {
+          const latlng = e.latlng;
+          marker.setLatLng(latlng);
+          document.getElementById('latitude').value = latlng.lat.toFixed(4);
+          document.getElementById('longitude').value = latlng.lng.toFixed(4);
+          document.getElementById('currentLat').textContent = latlng.lat.toFixed(4);
+          document.getElementById('currentLng').textContent = latlng.lng.toFixed(4);
+          updateMarkerPopup(marker, latlng);
+        });
+        
+        // Function to update marker popup
+        function updateMarkerPopup(m, latlng) {
+          const popupContent = `
+            <div style="font-size: 12px; color: #333;">
+              <strong>📍 Your Pickup Location</strong><br>
+              <small>Lat: ${latlng.lat.toFixed(4)}</small><br>
+              <small>Lng: ${latlng.lng.toFixed(4)}</small>
+            </div>
+          `;
+          m.bindPopup(popupContent).openPopup();
+        }
+        
+        // Initial popup
+        const initialPopupContent = `
+          <div style="font-size: 12px; color: #333;">
+            <strong>📍 Your Pickup Location</strong><br>
+            <small>Lat: ${initialLat.toFixed(4)}</small><br>
+            <small>Lng: ${initialLng.toFixed(4)}</small>
+          </div>
+        `;
+        marker.bindPopup(initialPopupContent).openPopup();
+      }
+    })();
+  </script>
+</body>
+</html>
