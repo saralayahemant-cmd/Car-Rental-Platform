@@ -1,6 +1,6 @@
 {
-  "engine":{
-    "node":"22.21.0"
+  "engine": {
+    "node": "22.21.0"
   },
   "name": "rent",
   "version": "1.0.0",
