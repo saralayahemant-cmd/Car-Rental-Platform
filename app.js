@@ -40,14 +40,14 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 
 const store=MongoStore.create({
-  mongourl:dburl,
+  mongoUrl:dburl,
   crypto:{
     secret:process.env.SECRET
   },
   touchAfter:24*3600,
 });
 
-store.on("error",()=>{
+store.on("error",(err)=>{
   console.log("Error in session store",err);
 });
 
