@@ -9,7 +9,7 @@ const authrouter = require("./routes/authrouter");
 const methodOverride = require("method-override");
 
 const session = require("express-session");
-const MongoStore = require("connect-mongo");
+const MongoStore = require("connect-mongo").default;
 
 const flash = require("connect-flash");
 const passport = require("passport");
